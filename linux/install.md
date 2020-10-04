@@ -22,5 +22,14 @@ sudo reboot
 
 ```
 sudo apt install gnome-tweaks -y
+sudo apt install gnome-software -y
 ```
 
+## Fix clock dual boot windows
+```
+timedatectl set-local-rtc 1 --adjust-system-clock
+```
+to revert:
+```
+timedatectl set-local-rtc 0 --adjust-system-clock
+```
