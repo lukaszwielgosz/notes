@@ -13,7 +13,7 @@ sudo apt install system76-cuda-latest
 sudo apt install system76-cudnn-10.2
 ```
 
-### Check nvidia driver
+check nvidia driver
 ```
 nvidia-smi
 ```
