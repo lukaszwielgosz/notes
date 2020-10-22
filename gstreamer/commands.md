@@ -127,3 +127,19 @@ gst-launch-1.0 v4l2src device=/dev/video2 ! image/jpeg, width=1920,height=1080,f
 ```
 gst-launch-1.0 udpsrc port=5602 ! application/x-rtp,encoding-name=H265,payload=96 ! rtph265depay ! h265parse ! nvv4l2decoder enable-max-performance=1 ! autovideosink sync=false
 ```
+
+## mixer
+based on
+```
+gst-launch-1.0 videotestsrc pattern=0 ! video/x-raw,width=640,height=480,framerate=\(fraction\)30/1 ! videoconvert ! autovideosink
+```
+
+side by side
+```
+gst-launch-1.0 videomixer name=mix ! videoconvert ! autovideosink videotestsrc pattern=0 ! video/x-raw,width=640,height=480,framerate=\(fraction\)30/1 ! videobox left=-642 border-alpha=0 ! queue ! mix. videotestsrc pattern=0 ! video/x-raw,width=640,height=480,framerate=\(fraction\)30/1 ! queue ! mix.
+```
+
+up down
+```
+gst-launch-1.0 videomixer name=mix ! videoconvert ! autovideosink videotestsrc pattern=0 ! video/x-raw,width=1280,height=720,framerate=\(fraction\)30/1 ! videobox top=-724 border-alpha=0 ! queue ! mix. videotestsrc pattern=0 ! video/x-raw,width=1280,height=720,framerate=\(fraction\)30/1 ! queue ! mix.
+```
