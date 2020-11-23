@@ -254,6 +254,15 @@ make -j 4
 make install
 ```
 
+```
+cd ~/jetson
+git clone git://code.qt.io/qt/qtgraphicaleffects.git -b $QT_VER
+cd qtgraphicaleffects
+~/jetson/qt5/bin/qmake
+make -j 4
+make install
+```
+
 ### Sync everything back to jetson
 ```
 cd ~/jetson
