@@ -1,4 +1,5 @@
 # Gstreamer commands
+http://wiki.oz9aec.net/index.php/Gstreamer_cheat_sheet
 
 List device formats options etc
 ```sh
@@ -78,6 +79,10 @@ gst-launch-1.0 udpsrc port=560 caps='application/x-rtp, media=(string)video, clo
 ## view h265 udp stream
 ```
 gst-launch-1.0 udpsrc port=5602 ! application/x-rtp,encoding-name=H265,payload=96 ! rtph265depay ! h265parse ! libde265dec ! autovideosink sync=false
+```
+
+```
+gst-launch-1.0 udpsrc port=5602 ! application/x-rtp,encoding-name=H265,payload=96 ! rtpjitterbuffer ! rtph265depay ! h265parse ! libde265dec ! autovideosink sync=false
 ```
 
 # Jetson
