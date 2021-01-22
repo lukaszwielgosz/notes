@@ -85,6 +85,10 @@ gst-launch-1.0 udpsrc port=5602 ! application/x-rtp,encoding-name=H265,payload=9
 gst-launch-1.0 udpsrc port=5602 ! application/x-rtp,encoding-name=H265,payload=96 ! rtpjitterbuffer ! rtph265depay ! h265parse ! libde265dec ! autovideosink sync=false
 ```
 
+```
+gst-launch-1.0 udpsrc port=5602 ! application/x-rtp,encoding-name=H265,payload=96 ! rtpjitterbuffer ! rtph265depay ! h265parse ! avdec_h265 ! autovideosink sync=false
+```
+
 # Jetson
 
 ## grabber

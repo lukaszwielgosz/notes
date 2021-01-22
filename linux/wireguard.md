@@ -5,10 +5,22 @@ https://dev.to/ivanmj16/how-to-install-and-configure-you-own-vpn-server-in-gcp-w
 
 https://www.jordanwhited.com/posts/wireguard-endpoint-discovery-nat-traversal/
 
+https://wireguard.how/server/google-cloud-platform/
+
+
+https://sreejithag.medium.com/set-up-wireguard-vpn-with-google-cloud-57bb3267a6ef
+
+## Google cloud setup
+Default udp listen port `51820`
+ 
+
+
 ## Install on ubuntu
 ```
 sudo apt install wireguard-tools -y
 ```
+
+
 
 ## Generate keys
 
@@ -48,12 +60,41 @@ sudo systemctl status wg-quick@wg0
 
 ## Server
 
+enable ipv4 forwarding
+```
+vim /etc/sysctl.conf
+```
+uncomment line `net.ipv4.ip_forward = 1`
+
+```
+sudo apt install linux-headers-$(uname -r)
+```
+
 reload config file
 ```
 sudo su -c "wg addconf wgserver <(wg-quick strip wgserver)"
+sudo wg-quick down wg0 && sudo wg-quick up wg0
 ```
 
 check wireguard status
 ```
 sudo wg show wgserver
 ```
+
+
+# Fedora client
+```
+sudo dnf install wireguard-tools
+sudo su -
+cd /etc/wireguard
+wg genkey | tee privatekey | wg pubkey > publickey
+sudo cat privatekey
+
+qrencode -t ansiutf8 < wg0.conf
+```
+
+```
+vim wg0.conf
+```
+
+wg genkey | tee privatekey | wg pubkey > publickey
