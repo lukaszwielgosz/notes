@@ -50,10 +50,17 @@ gst-launch-1.0 v4l2src device=/dev/video2 ! video/x-raw,width=640,height=480,fra
 gst-launch-1.0 v4l2src device=/dev/video2 ! video/x-raw,width=640,height=480,framerate=60/1 ! videoconvert ! autovideosink
 ```
 
+## Stream jpeg
+```sh
+gst-launch-1.0 videotestsrc pattern=18 ! video/x-raw,width=1920,height=1080,framerate=\(fraction\)30/1 !videoconvert ! jpegenc ! udpsink host=192.168.0.141 port=5602 -e
+```
+
 ## Stream h264
 ```sh
 gst-launch-1.0 videotestsrc ! videoconvert ! x264enc bitrate=4000 ! rtph264pay ! "application/x-rtp,payload=(int)103,clock-rate=(int)90000" ! udpsink host=127.0.0.1 port=5602 -e
 ```
+
+
 
 ### Webcam
 ```sh

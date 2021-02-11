@@ -58,11 +58,12 @@ sudo systemctl start wg-quick@wg0
 sudo systemctl status wg-quick@wg0
 ```
 
-## Server
+## Server forwarding
 
 enable ipv4 forwarding
 ```
 vim /etc/sysctl.conf
+sysctl --system
 ```
 uncomment line `net.ipv4.ip_forward = 1`
 

@@ -1,5 +1,11 @@
 # Fedora
 
+## sudo
+```
+usermod -aG wheel lukasz
+```
+
+
 Install AppEditor
 ```
 sudo dnf install appeditor
@@ -28,3 +34,4 @@ try to run it like this:
 ```
 QT_AUTO_SCREEN_SCALE_FACTOR=0 QT_SCALE_FACTOR=0.5 QT_XCB_GL_INTEGRATION=xcb_egl ./eagle
 ```
+
