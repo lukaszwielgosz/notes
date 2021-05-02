@@ -328,24 +328,40 @@ upstream php-handler {
 }
 
 server {
-    #listen 443 ssl;
     listen 80;
-    server_name 192.168.2.100;
+    listen [::]:80;
+    #server_name fedora-server.lan 192.168.2.100 10.0.0.2 nextcloud.wielgosz.pro;
+    server_name _;
+    # Enforce HTTPS
+    #return 301 https://$server_name$request_uri;
+    return 301 https://$host$request_uri;
+}
 
-    #ssl_certificate /etc/ssl/nginx/cloud.example.com.crt;
-    #ssl_certificate_key /etc/ssl/nginx/cloud.example.com.key;
+server {
+    listen 443 ssl http2;
+    listen [::]:443 ssl http2;
+    server_name fedora-server.lan 192.168.2.100 10.0.0.2 nextcloud.wielgosz.pro;
 
-    # Add headers to serve security related headers
-    # Before enabling Strict-Transport-Security headers please read into this
-    # topic first.
-    # add_header Strict-Transport-Security "max-age=15768000;
-    # includeSubDomains; preload;";
+    ssl_certificate /etc/ssl/nginx/nginx-selfsigned.crt;
+    ssl_certificate_key /etc/ssl/nginx/nginx-selfsigned.key;
+    ssl_dhparam /etc/ssl/nginx/dhparam.pem;
+
+    ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
+    ssl_prefer_server_ciphers on;
+    ssl_ciphers "EECDH+AESGCM:EDH+AESGCM:AES256+EECDH:AES256+EDH";
+    ssl_ecdh_curve secp384r1;
+    ssl_session_cache shared:SSL:10m;
+    ssl_session_tickets off;
+    ssl_stapling on;
+    ssl_stapling_verify on;
+    resolver 8.8.8.8 8.8.4.4 valid=300s;
+    resolver_timeout 5s;
+    # Disable preloading HSTS for now.  You can use the commented out header line that includes
+    # the "preload" directive if you understand the implications.
+    #add_header Strict-Transport-Security "max-age=63072000; includeSubdomains; preload";
+    add_header Strict-Transport-Security "max-age=63072000; includeSubdomains";
+    add_header X-Frame-Options DENY;
     add_header X-Content-Type-Options nosniff;
-    add_header X-Frame-Options "SAMEORIGIN";
-    add_header X-XSS-Protection "1; mode=block";
-    add_header X-Robots-Tag none;
-    add_header X-Download-Options noopen;
-    add_header X-Permitted-Cross-Domain-Policies none;
 
     # Path to the root of your installation
     root /var/www/html/nextcloud/;
@@ -453,6 +469,15 @@ Test the Nginx configuration.
 nginx -t
 ```
 
+### self signed ssl certificate
+```
+mkdir /etc/ssl/nginx/
+
+sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/ssl/nginx/nginx-selfsigned.key -out /etc/ssl/nginx/nginx-selfsigned.crt
+
+sudo openssl dhparam -out /etc/ssl/nginx/dhparam.pem 2048
+```
+
 Reload the Nginx service if everything is okay.
 ```bash
 systemctl reload nginx
@@ -477,7 +502,8 @@ add trusted domains:
   array (
           0 => 'localhost',
           1 => '192.168.2.100',
-          2 => '10.0.0.2'
+          2 => '10.0.0.2',
+          3 => 'fedora-server.lan'
   ),
 ```
 
@@ -540,6 +566,12 @@ $CONFIG = array (
 );
 
 ```
+
+
+
+
+
+
 
 # Wireguard
 ```bash
