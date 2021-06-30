@@ -82,8 +82,9 @@ firewall-cmd --reload
 
 ## Install PHP
 ```bash
-dnf install php-fpm php-cli php-gd php-mbstring php-intl php-mysqlnd php-imagick php-zip php-json php-process php-xml php-bcmath php-gmp php-ftp php-smbclient php-opcache php-ldap
-dnf install php-pgsql 
+dnf install php-fpm php-cli php-gd php-mbstring php-intl php-mysqlnd
+php-imagick php-zip php-json php-process php-xml php-bcmath php-gmp php-ftp
+php-smbclient php-opcache php-ldap dnf install php-pgsql 
 ```
 
 check version:
